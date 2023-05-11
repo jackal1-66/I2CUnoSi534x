@@ -39,14 +39,14 @@ def write(man):
                     check = False 
                 if(not check):
                     break      
-                arduino.write(b'0')
-                page = inputs[0].encode()
+                arduino.write(b'7')
+                page = (inputs[0]+'\r').encode()
                 arduino.write(page)
                 time.sleep(0.01)
-                reg = inputs[1].encode()
+                reg = (inputs[1]+'\r').encode()
                 arduino.write(reg)    
                 time.sleep(0.01)
-                val = inputs[2].encode()
+                val = (inputs[2]+'\r').encode()
                 arduino.write(val)
                 time.sleep(0.1)
                 del inputs
