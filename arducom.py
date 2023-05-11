@@ -52,7 +52,7 @@ def write(man):
                 del inputs
         if(check):        
             print("Registers loaded from file.") 
-        else: 45 AFF
+        else:
             print("Error in loading registers")
             print("Check line "+str(cycle)+ " of I2C.in")           
 
