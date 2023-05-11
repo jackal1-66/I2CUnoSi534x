@@ -1,22 +1,14 @@
 #include <Wire.h>
 #define SI5341 0x77
-#define register 0x1C 
-#define off 0 
-#define crystal 48e6 //48 MHz crystal XAXB frequency
-#define mux0 0x0B //Page 1
 
 char rserial;
 String t_reg, t_val, t_pag;
 char *regstr, *valstr, *pagstr;
 long reg, val, pag;
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(115200);  // put your setup code here, to run once:
   Serial.setTimeout(100);
   page(0x0);
-  /*Serial.print("Board revision is 0x");
-  uint16_t board = (read(0x03) << 8) | read(0x02);
-  Serial.println(board,HEX);*/
 }
 
 void loop() {
@@ -45,14 +37,14 @@ void loop() {
     Serial.println(read(reg),HEX);
   }
   else if(rserial == '0'){
-    while (Serial.available()) 
+    while (Serial.available())  //Necessary because python for some reason is sending random data after this
       Serial.read();
     while(Serial.available() == 0){}
     t_pag = Serial.readStringUntil('\n');  
     while(Serial.available() == 0){}
-    t_reg = Serial.readStringUntil('\r');
+    t_reg = Serial.readStringUntil('\n');
     while(Serial.available() == 0){}
-    t_val = Serial.readStringUntil('\r');
+    t_val = Serial.readStringUntil('\n');
     const char * temp_reg = t_reg.c_str();  
     reg = strtoul(temp_reg, &regstr,16);
     const char * temp_val = t_val.c_str();  
