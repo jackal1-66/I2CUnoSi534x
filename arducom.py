@@ -40,7 +40,7 @@ def write(man):
                 if(not check):
                     break         
                 arduino.write(b'7')
-                if(inputs[0] == "B" and inputs[1] == "4E" and inputs[2] == "1A"):
+                if((inputs[0] == "B" or inputs[0] == "0B") and inputs[1] == "4E" and inputs[2] == "1A"):
                     time.sleep(0.3) #needed when resetting PLL before setting peculiar registers
                 page = (inputs[0]+'\r').encode()
                 arduino.write(page)
@@ -59,7 +59,7 @@ def write(man):
             print("Check line "+str(cycle)+ " of I2C.in")           
 
 while True:
-        print("Enter R to read, W to write, or L to load file")
+        print("Enter R to read, W to write, L to load file or C to generate input file from CSV")
         command = input()
         if command.upper() == 'R':
             arduino.write(b'1')
@@ -81,5 +81,20 @@ while True:
             write(1)
         elif command.upper() == 'L':
             write(0)    
+        elif command.upper() == 'C':
+            csvname = input("Select CSV filename ")
+            filei2c = open("I2C.in", "w")
+            with open(csvname) as csv:
+                for line in csv:           
+                    if ("#" in line) or ("Address" in line):
+                        continue
+                    treg = line.split(',')
+                    tadd = treg[0][2:]
+                    page = tadd[:2]
+                    register = tadd[2:]
+                    val = treg[1][2:]
+                    filei2c.write(page+' '+register+' '+val)
+                    del treg, tadd, page, register, val
+            filei2c.close()        
         else:
             print("Try with \'R\', \'W\' or \'L\'.")    
