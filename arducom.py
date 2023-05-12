@@ -16,7 +16,7 @@ def write(man):
         time.sleep(0.01)
         val = input("Select value to Write ").encode()
         arduino.write(val)
-        time.sleep(0.1)
+        time.sleep(0.01)
     else:
         #This function gets all the lines in file "I2C.in" and write the register in a loop
         #The syntax of the file is page, register and value to write. 
@@ -38,8 +38,10 @@ def write(man):
                     print("Wrong syntax on file.")
                     check = False 
                 if(not check):
-                    break      
+                    break         
                 arduino.write(b'7')
+                if(inputs[0] == "B" and inputs[1] == "4E" and inputs[2] == "1A"):
+                    time.sleep(0.3) #needed when resetting PLL before setting peculiar registers
                 page = (inputs[0]+'\r').encode()
                 arduino.write(page)
                 time.sleep(0.01)
@@ -48,7 +50,7 @@ def write(man):
                 time.sleep(0.01)
                 val = (inputs[2]+'\r').encode()
                 arduino.write(val)
-                time.sleep(0.1)
+                time.sleep(0.01)
                 del inputs
         if(check):        
             print("Registers loaded from file.") 
