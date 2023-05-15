@@ -1,5 +1,6 @@
 #include <Wire.h>
-#define SI5341 0x77
+#define SI5341 0x77 //depends on pins A0 A1, ranges from 74 to 77
+#define SI5344 0x6B //depends on pins A0 A1, ranges from 68 to 6B
 
 char rserial;
 String t_reg, t_val, t_pag;

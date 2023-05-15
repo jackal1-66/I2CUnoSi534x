@@ -41,7 +41,9 @@ def write(man):
                     break         
                 arduino.write(b'7')
                 if((inputs[0] == "B" or inputs[0] == "0B") and inputs[1] == "4E" and inputs[2] == "1A"):
-                    time.sleep(0.3) #needed when resetting PLL before setting peculiar registers
+                    time.sleep(0.3) #needed when resetting PLL before setting peculiar registers for Si5341
+                if((inputs[0] == "5" or inputs[0] == "05") and inputs[1] == "40" and (inputs[2] == "1" or inputs[2] == "01")):  
+                    time.sleep(0.3) #needed when resetting PLL before setting peculiar registers for Si5344  
                 page = (inputs[0]+'\r').encode()
                 arduino.write(page)
                 time.sleep(0.01)
