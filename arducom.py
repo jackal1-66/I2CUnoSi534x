@@ -1,9 +1,15 @@
+#!/usr/bin/python3
+
 import serial
 import time 
+import argparse
 
-arduino = serial.Serial(port="/dev/ttyACM0",baudrate=115200,timeout=0)
+arduino = serial.Serial(port="/dev/ttyACM0",baudrate=115200,timeout=0) #for eic /dev/ARDUINOI2C
 print("Arduino rebooting, wait 2 seconds")
 time.sleep(2)      #Necessary because Arduino reboots when the Serial communication is opened
+
+parser = argparse.ArgumentParser(prog='I2C Silab Programmer', description='Read/Write, Load and create configuration files for Silab5341/4')
+parser.add_argument('-i', '--interactive', action='store_true', help='Run the program in interactive mode')  # Set interactive program
 
 def write(man):
     if man == 1:
@@ -58,45 +64,46 @@ def write(man):
             print("Registers loaded from file.") 
         else:
             print("Error in loading registers")
-            print("Check line "+str(cycle)+ " of I2C.in")           
+            print("Check line "+str(cycle)+ " of I2C.in")
 
-while True:
-        print("Enter R to read, W to write, L to load file or C to generate input file from CSV")
-        command = input()
-        if command.upper() == 'R':
-            arduino.write(b'1')
-            page = input("Select page ").encode()
-            arduino.write(page)
-            reg = input("Select register ").encode()
-            arduino.write(reg)
-            print("Register Read")
-            time.sleep(0.1)
-            data = arduino.readline()
-            while not '\\n'in str(data):    #if this is not implemented data read is not always successful
+if(parser.interactive == True):
+    while True:
+            print("Enter R to read, W to write, L to load file or C to generate input file from CSV")
+            command = input()
+            if command.upper() == 'R':
+                arduino.write(b'1')
+                page = input("Select page ").encode()
+                arduino.write(page)
+                reg = input("Select register ").encode()
+                arduino.write(reg)
+                print("Register Read")
                 time.sleep(0.1)
-                temp = arduino.readline()
-                if temp.decode():
-                    data = (data.decode()+temp.decode()).encode()
-            data = data.decode()      
-            print(data)
-        elif command.upper() == 'W':
-            write(1)
-        elif command.upper() == 'L':
-            write(0)    
-        elif command.upper() == 'C':
-            csvname = input("Select CSV filename ")
-            filei2c = open("I2C.in", "w")
-            with open(csvname) as csv:
-                for line in csv:           
-                    if ("#" in line) or ("Address" in line):
-                        continue
-                    treg = line.split(',')
-                    tadd = treg[0][2:]
-                    page = tadd[:2]
-                    register = tadd[2:]
-                    val = treg[1][2:]
-                    filei2c.write(page+' '+register+' '+val)
-                    del treg, tadd, page, register, val
-            filei2c.close()        
-        else:
-            print("Try with \'R\', \'W\' or \'L\'.")    
+                data = arduino.readline()
+                while not '\\n'in str(data):    #if this is not implemented data read is not always successful
+                    time.sleep(0.1)
+                    temp = arduino.readline()
+                    if temp.decode():
+                        data = (data.decode()+temp.decode()).encode()
+                data = data.decode()      
+                print(data)
+            elif command.upper() == 'W':
+                write(1)
+            elif command.upper() == 'L':
+                write(0)    
+            elif command.upper() == 'C':
+                csvname = input("Select CSV filename ")
+                filei2c = open("I2C.in", "w")
+                with open(csvname) as csv:
+                    for line in csv:           
+                        if ("#" in line) or ("Address" in line):
+                            continue
+                        treg = line.split(',')
+                        tadd = treg[0][2:]
+                        page = tadd[:2]
+                        register = tadd[2:]
+                        val = treg[1][2:]
+                        filei2c.write(page+' '+register+' '+val)
+                        del treg, tadd, page, register, val
+                filei2c.close()        
+            else:
+                print("Try with \'R\', \'W\' or \'L\'.")    
