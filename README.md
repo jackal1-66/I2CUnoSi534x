@@ -4,12 +4,16 @@ Load the I2CUniSi534x.ino firmware in the arduino board editing first the I2C ad
 in the Write/Read and Page functions).  
 Execute the arducom.py program using python3 (not tested with python2) which will open the interactive interface 
 ```
-python3 arducom.py
+./arducom.py -i
 ```
 If it doesn't work, try first to install the library *pyserial*
 ```
 pip install pyserial
+```  
+To run it you also need to make the program executable: 
 ```
+chmod +x arducom.py
+```  
 Generate the csv file obtained via ClockBuilder Pro (being careful to remove the Summary header from the option of
 the register file (export Menù of CBPro) selecting the C option and inserting the filename. 
 Afterwards you can load the I2C.in file (now regenerated), using the option L. 
