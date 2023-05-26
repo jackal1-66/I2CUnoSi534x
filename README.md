@@ -27,7 +27,7 @@ The MCU jumpers of SDA and SCLK must be disconnected for this specific purpose (
 # Helper command line
 
 ```
-usage: I2C Silab Programmer [-h] [-i] [-r <page> <register>] [-w <page> <register> <value>] [-L] [-c <filename.csv>]
+usage: ./arducom.py [-h] [-i] [-r <page> <register>] [-w <page> <register> <value>] [-L] [-c <filename.csv>]
 
 Read/Write single registers + load and create configuration files for Silab5341/4
 

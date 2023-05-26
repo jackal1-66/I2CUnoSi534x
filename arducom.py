@@ -7,7 +7,7 @@ import os, sys
 
 portuno = "/dev/ttyACM0"
 
-parser = argparse.ArgumentParser(prog='I2C Silab Programmer', description='Read/Write single registers + load and create configuration files for Silab5341/4')
+parser = argparse.ArgumentParser(prog='./arducom.py', description='Read/Write single registers + load and create configuration files for Silab5341/4')
 parser.add_argument('-i', '--interactive', action='store_true', help='run the program in interactive mode') 
 parser.add_argument('-r', '--read', nargs=2, metavar=('<page>', '<register>'), help='read register of Silab, syntax <page> <register> in hexadecimal')
 parser.add_argument('-w', '--write', nargs=3, metavar=('<page>', '<register>', "<value>"), help='write register of Silab, syntax <page> <register> <value> in hexadecimal')
