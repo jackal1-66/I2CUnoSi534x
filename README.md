@@ -23,3 +23,23 @@ will have an amplitude of ~1.8V.
 To program the clock generator via I2C, the I2C_SEL pin must be set to high using the 3.3 V signal of the Arduino and the SDA/SCLK inputs 
 of the SI534x board must be connected (including a pull-up resistor of ~4 kOhm to the 3.3 V of Arduino) to the SDA/SCL pin outs of the UNO board.  
 The MCU jumpers of SDA and SCLK must be disconnected for this specific purpose (J36 on Si5341 and J17 on Si5344).  
+
+# Helper command line
+
+```
+usage: I2C Silab Programmer [-h] [-i] [-r <page> <register>] [-w <page> <register> <value>] [-L] [-c <filename.csv>]
+
+Read/Write single registers + load and create configuration files for Silab5341/4
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i, --interactive     run the program in interactive mode
+  -r <page> <register>, --read <page> <register>
+                        read register of Silab, syntax <page> <register> in hexadecimal
+  -w <page> <register> <value>, --write <page> <register> <value>
+                        write register of Silab, syntax <page> <register> <value> in hexadecimal
+  -L, --load            load I2C.in file (used to fully program Silab board)
+  -c <filename.csv>, --convert <filename.csv>
+                        convert .csv file to I2C.in input file
+
+```
